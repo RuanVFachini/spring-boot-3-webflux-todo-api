@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: webflux
+
+logging:
+  level:
+    root: TRACE
