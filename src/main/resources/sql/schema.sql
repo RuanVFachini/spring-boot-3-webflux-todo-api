@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS USERS (
+     id BIGSERIAL PRIMARY KEY,
+     username VARCHAR NOT NULL,
+     hash VARCHAR NOT NULL,
+     CONSTRAINT unique_user UNIQUE (username)
+);

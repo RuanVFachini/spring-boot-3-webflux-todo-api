@@ -1,29 +1,23 @@
 package com.example.webflux.application.filters
 
-import org.springframework.context.annotation.Lazy
+import com.example.webflux.domain.services.TokenService
+import com.example.webflux.domain.entities.User
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
-//@Component
 class JwtAuthFilter(
-    private val jwtTokenService: JwtTokenService
+    private val jwtTokenService: TokenService
 ) : WebFilter {
     override fun filter(
         exchange: ServerWebExchange,
         chain: WebFilterChain
     ): Mono<Void?> {
          val authentication = UsernamePasswordAuthenticationToken(
-            User(),
+             User(),
             null,
             User().authorities
         )
@@ -33,24 +27,4 @@ class JwtAuthFilter(
                 ReactiveSecurityContextHolder.withAuthentication(authentication)
             )
     }
-}
-
-class User : UserDetails {
-    override fun getAuthorities(): Collection<GrantedAuthority?>? {
-        return listOf(SimpleGrantedAuthority("ROLE_USER"))
-    }
-
-    override fun getPassword(): String? {
-        return "teste"
-    }
-
-    override fun getUsername(): String? {
-        return "teste"
-    }
-
-}
-
-@Service
-class JwtTokenService() {
-
 }
