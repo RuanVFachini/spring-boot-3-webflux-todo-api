@@ -11,7 +11,7 @@ class TodoController {
 
     @GetMapping
     suspend fun all(): String {
-        delay(1000L)
+        delay(10000L)
         return "teste"
     }
 }

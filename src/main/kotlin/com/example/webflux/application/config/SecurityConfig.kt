@@ -1,9 +1,11 @@
 package com.example.webflux.application.config
 
 import com.example.webflux.application.filters.JwtAuthFilter
+import com.example.webflux.application.filters.JwtTokenService
 import org.springframework.boot.web.servlet.DispatcherType
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -16,7 +18,7 @@ import org.springframework.security.web.server.context.NoOpServerSecurityContext
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfig(
-    private val jwtAuthFilter: JwtAuthFilter
+    private val jwtTokenService: JwtTokenService
 ) {
 
     @Bean
@@ -35,7 +37,7 @@ class SecurityConfig(
                 it.anyExchange().authenticated()
             }
 
-            .addFilterBefore(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+            .addFilterBefore(JwtAuthFilter(jwtTokenService), SecurityWebFiltersOrder.AUTHENTICATION)
 //            .exceptionHandling {
 //                it.authenticationEntryPoint { _, response, _ ->
 //                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED)

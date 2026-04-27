@@ -14,9 +14,9 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
-@Component
+//@Component
 class JwtAuthFilter(
-    @param:Lazy private val jwtTokenService: JwtTokenService
+    private val jwtTokenService: JwtTokenService
 ) : WebFilter {
     override fun filter(
         exchange: ServerWebExchange,
