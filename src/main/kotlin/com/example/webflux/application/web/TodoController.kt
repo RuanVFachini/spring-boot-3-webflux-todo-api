@@ -1,17 +1,42 @@
 package com.example.webflux.application.web
 
-import kotlinx.coroutines.delay
+import com.example.webflux.application.requests.TodoRequest
+import com.example.webflux.application.responses.TodoResponse
+import com.example.webflux.domain.entities.Todo
+import com.example.webflux.domain.services.TodoService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 
 @RestController
 @RequestMapping("api/todos")
-class TodoController {
+class TodoController(
+    private val service: TodoService
+) {
+
+    private fun Todo.mapToResponse(): TodoResponse = TodoResponse(
+        id = this.id,
+        description = this.description,
+        completed = this.completed,
+        createdAt = this.createdAt,
+        null
+    )
+
+    private fun TodoRequest.toEntity(): Todo = Todo(null, description, false, Instant.now())
 
     @GetMapping
-    suspend fun all(): String {
-        delay(10000L)
-        return "teste"
+    suspend fun all() = service.all().map { it.mapToResponse() }
+
+    @PostMapping
+    suspend fun create(@RequestBody request: TodoRequest): TodoResponse {
+        val entity = request.toEntity()
+        return service.save(entity).mapToResponse()
     }
+
+    @PostMapping("/{id}/complete")
+    suspend fun complete(@PathVariable id: Int) = service.complete(id).mapToResponse()
 }

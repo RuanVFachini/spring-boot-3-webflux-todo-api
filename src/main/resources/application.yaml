@@ -1,25 +1,15 @@
 spring:
   application:
-    name: webflux-h2-app
+    name: webflux-postgres-app
   security:
     auth:
       secret: teste
       issuer: teste
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
-  datasource:
-    url: jdbc:h2:file:./data/testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
 
   r2dbc:
-    url: r2dbc:h2:file:///./data/testdb
-    username: sa
-    password:
+    url: r2dbc:postgresql://webflux-postgres:5432/api-performance
+    username: user
+    password: user@123
 
   sql:
     init:
@@ -30,8 +20,13 @@ spring:
 
 server:
   port: 8080
+  tomcat:
+    threads:
+      max: 10
 
 logging:
   level:
-    org.springframework.r2dbc: DEBUG
-    io.r2dbc.h2: DEBUG
+    org.springframework: ERROR
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    root: ERROR
