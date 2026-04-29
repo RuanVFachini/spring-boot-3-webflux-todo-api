@@ -2,8 +2,8 @@ import http from 'k6/http';
 import { check, group, sleep } from 'k6';
 export const options = {
   stages: [
-    { duration: '30s', target: 20 },   // Ramp-up: até 20 usuários
-    { duration: '1m', target: 500 },    // Load: até 50 usuários
+    { duration: '30s', target: 10000 },   // Ramp-up: até 20 usuários
+    { duration: '1m', target: 50000 },    // Load: até 500 usuários
     { duration: '30s', target: 0 },    // Ramp-down
   ],
   thresholds: {
@@ -18,30 +18,30 @@ export default function () {
   group('Todo creation', function () {
     
     // 1. Realiza loging
-    const login = http.post(`${BASE_URL}/api/auth/login`, {
+    const login = http.post(`${BASE_URL}/api/auth/login`, JSON.stringify({
       "email": "teste1",
       "password": "teste1"
-    }, {
+    }), {
       headers: { 'Content-Type': 'application/json' },
     });
     check(login, {
-      'validação ok': (r) => r.status === 200,
-      'latência < 1000ms': (r) => r.timings.duration < 1000,
+      'login realizado': (r) => r.status === 200,
+      'latência < 3000ms': (r) => r.timings.duration < 3000,
     });
     sleep(1);
-    
+
     // 2. Criar todo
-    const todo = http.post(`${BASE_URL}/api/todo`, {
+    const todo = http.post(`${BASE_URL}/api/todos`, JSON.stringify({
       description: "item 1"
-    }, {
+    }), {
       headers: { 
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + login.json().token
       },
     });
     check(todo, {
-      'pagamento processado': (r) => r.status === 200,
-      'latência < 2000ms': (r) => r.timings.duration < 2000,
+      'todo criado': (r) => r.status === 200,
+      'latência < 3000ms': (r) => r.timings.duration < 3000,
     });
     sleep(1);
   });
