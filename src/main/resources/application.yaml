@@ -10,6 +10,10 @@ spring:
     url: r2dbc:postgresql://webflux-postgres:5432/api-performance
     username: user
     password: user@123
+    pool:
+      initial-size: 10
+      max-size: 30
+      max-idle-time: 30m
 
   sql:
     init:

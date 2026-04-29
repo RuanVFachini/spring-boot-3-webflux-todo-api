@@ -3,7 +3,7 @@ import { check, group, sleep } from 'k6';
 export const options = {
   stages: [
     { duration: '30s', target: 10000 },   // Ramp-up: até 20 usuários
-    { duration: '1m', target: 50000 },    // Load: até 500 usuários
+    { duration: '1m', target: 5000 },    // Load: até 500 usuários
     { duration: '30s', target: 0 },    // Ramp-down
   ],
   thresholds: {

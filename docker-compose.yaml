@@ -1,11 +1,18 @@
 services:
   webflux-postgres:
     image: postgres
+    command: >
+      postgres
+      -c max_connections=300
+      -c shared_buffers=256MB
+      -c effective_cache_size=512MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
     deploy:
       resources:
         limits:
-          cpus: '1.0'          # Limite de até 1.5 núcleos de CPU [2, 10]
-          memory: 256M        # Limite máximo de 1024 MB de RAM [2, 10]
+          cpus: '2.0'          # Limite de até 1.5 núcleos de CPU [2, 10]
+          memory: 1024M        # Limite máximo de 1024 MB de RAM [2, 10]
         reservations:
           cpus: '0.5'          # Reserva garantida de 0.5 CPU
           memory: 256M         # Reserva garantida de 512 MB RAM [1]
@@ -25,7 +32,7 @@ services:
       resources:
         limits:
           cpus: '1.5'          # Limite de até 1.5 núcleos de CPU [2, 10]
-          memory: 3072M        # Limite máximo de 1024 MB de RAM [2, 10]
+          memory: 2048M        # Limite máximo de 1024 MB de RAM [2, 10]
         reservations:
           cpus: '0.5'          # Reserva garantida de 0.5 CPU
           memory: 512M         # Reserva garantida de 512 MB RAM [1]
