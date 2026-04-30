@@ -3,6 +3,14 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'          # Limite de até 1.5 núcleos de CPU [2, 10]
+          memory: 3048M        # Limite máximo de 1024 MB de RAM [2, 10]
+        reservations:
+          cpus: '0.5'          # Reserva garantida de 0.5 CPU
+          memory: 256M         # Reserva garantida de 512 MB RAM [1]
     networks:
       - minha-rede
 
@@ -39,7 +47,7 @@ services:
       resources:
         limits:
           cpus: '1.5'          # Limite de até 1.5 núcleos de CPU [2, 10]
-          memory: 2048M        # Limite máximo de 1024 MB de RAM [2, 10]
+          memory: 3048M        # Limite máximo de 1024 MB de RAM [2, 10]
         reservations:
           cpus: '0.5'          # Reserva garantida de 0.5 CPU
           memory: 512M         # Reserva garantida de 512 MB RAM [1]

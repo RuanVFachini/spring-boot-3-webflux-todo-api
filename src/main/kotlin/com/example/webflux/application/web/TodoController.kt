@@ -1,5 +1,7 @@
 package com.example.webflux.application.web
 
+import com.example.webflux.application.extensions.mapToResponse
+import com.example.webflux.application.extensions.toEntity
 import com.example.webflux.application.requests.TodoRequest
 import com.example.webflux.application.responses.TodoResponse
 import com.example.webflux.domain.entities.Todo
@@ -18,15 +20,6 @@ class TodoController(
     private val service: TodoService
 ) {
 
-    private fun Todo.mapToResponse(): TodoResponse = TodoResponse(
-        id = this.id,
-        description = this.description,
-        completed = this.completed,
-        createdAt = this.createdAt,
-        null
-    )
-
-    private fun TodoRequest.toEntity(): Todo = Todo(null, description, false, Instant.now())
 
     @GetMapping
     suspend fun all() = service.all().map { it.mapToResponse() }

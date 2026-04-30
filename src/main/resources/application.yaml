@@ -13,9 +13,10 @@ spring:
     username: user
     password: user@123
     pool:
-      initial-size: 10
-      max-size: 30
-      max-idle-time: 30m
+      initial-size: 100 
+      max-size: 500
+      max-idle-time: 30000
+      validation-query: SELECT 1
 
   sql:
     init:
@@ -26,16 +27,16 @@ spring:
 
 server:
   port: 8080
-  tomcat:
-    threads:
-      max: 10
+  netty:
+    eventloop:
+      threads: 16
 
 logging:
   level:
-    org.springframework: TRACE
-    org.springframework.web: TRACE
-    org.hibernate: TRACE
-    root: TRACE
+    org.springframework: ERROR
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    root: ERROR
 
 management:
   tracing:

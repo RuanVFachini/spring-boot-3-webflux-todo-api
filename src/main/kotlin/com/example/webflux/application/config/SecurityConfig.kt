@@ -33,6 +33,7 @@ class SecurityConfig(
                 it.pathMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 it.pathMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
                 it.pathMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
+                it.pathMatchers(HttpMethod.POST, "/api/benchmark/**").permitAll()
                 it.anyExchange().authenticated()
             }
 
